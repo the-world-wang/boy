@@ -23,3 +23,19 @@ public final class UserConstants {
     }
 }
 ```
+
+Import
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+
+<dependency>
+    <groupId>com.github.the-world-wang</groupId>
+    <artifactId>boy</artifactId>
+    <version>${version}</version>
+</dependency>
+```
