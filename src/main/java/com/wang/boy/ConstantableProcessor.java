@@ -72,7 +72,7 @@ public class ConstantableProcessor extends AbstractProcessor {
 
                 if (methodName.startsWith("set")
                         && method.getParameters().size() == 1) {
-                    String fieldName = setterToField(methodName);
+                    String fieldName = getFieldName(method, methodName);
                     typeBuilder.addField(generateField(fieldName));
                 }
             }
@@ -94,13 +94,20 @@ public class ConstantableProcessor extends AbstractProcessor {
         messager.printMessage(Diagnostic.Kind.ERROR, String.format(format, args));
     }
 
+    private static String getFieldName(ExecutableElement method, String methodName) {
+        Field field = method.getAnnotation(Field.class);
+        if (field != null && !"".equals(field.value())) {
+            return field.value();
+        }
+        return setterToField(methodName);
+    }
+
     private static FieldSpec generateField(String fieldName) {
         return FieldSpec.builder(String.class, fieldName)
                 .initializer("$S", fieldName.toLowerCase())
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
                 .build();
     }
-
 
     private static String setterToField(String method) {
         String name = method.split("set")[1];
